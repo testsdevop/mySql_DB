@@ -1,0 +1,5 @@
+Command to start the mySql server -- 
+
+mysql -h 127.0.0.1  -u root -p
+
+

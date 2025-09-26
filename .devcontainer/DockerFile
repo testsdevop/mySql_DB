@@ -1,0 +1,4 @@
+FROM mcr.microsoft.com/devcontainers/base:ubuntu
+
+# Install MySQL CLI
+RUN apt-get update && apt-get install -y mysql-client
