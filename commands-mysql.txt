@@ -1,0 +1,14 @@
+-- SHOW DETAILS OF ATTRIBUTE -- 
+DESCRIBE <table_name>;
+SHOW COLUMNS FROM <table_name>;
+SHOW CREATE TABLE <table_name>;
+
+
+
+-- order by 
+
+it need the arrribute name if comapared 
+
+SELECT DISTINCT  emp_name from employee ORDER BY emp_name DESC,city ASC; -- false 
+
+SELECT DISTINCT  emp_name, city from employee ORDER BY emp_name DESC,city ASC; -- true
