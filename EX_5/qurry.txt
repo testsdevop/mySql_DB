@@ -1,0 +1,33 @@
+q1- Use of union all operation findind employee who has age between 30 to 35 and  40 to 50 
+q2 - Use of intersection all to find all employee who are from ranchi and age > 30
+q3 - Use of except all 
+q4 - show employee name where name is not null 
+q5 - List details of eployee who's age is null or city  is NULL
+q6 - List all tuples who have null in any tupple 
+q7 - Perform not operation 
+q8 - find average of salary 
+q9 - find avg of salary without null 
+q10 - find name of employee who earns maximum salary
+q11 - Calculate total of salary 
+q12 - Get name of employee who work in some organisation using exists 
+q13 - count no of tuples incluing null
+q14 - count no of tuples excluding null
+q15 - use of min : aggrigate 
+## Aggrigate function with condition 
+q16 - use of as clause with aggrigate function 
+q17 - use of where caluse with aggrigate function 
+q18 - Use of COUNT(DISTINCT) with WHERE clause
+q19 - Use of COUNT with column and WHERE clause
+q20 - 
+q21 - Use of GROUP BY with AVG and AS alias
+q22 - Use of HAVING clause with aggregate function
+q22- 
+q23 - 
+q24 - 
+## sub querry 
+q26 - Use of subquery in FROM clause with AS alias
+q27 - Use of subquery with MIN in WHERE clause
+q28 - Use of subquery with AVG in WHERE clause
+q29 - Use of scalar subquery in SELECT clause
+## set membership 
+q30 - Use of nested IN subqueries with OR

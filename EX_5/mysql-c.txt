@@ -1,0 +1,417 @@
+-- 1. Use of UNION operator to combine results
+(SELECT city FROM employee) 
+UNION 
+(SELECT city FROM company);
+
+-- 2. Use of UNION ALL to combine results with duplicates
+(SELECT city FROM employee) 
+UNION ALL 
+(SELECT city FROM company);
+
+-- 3. Use of INTERSECT ALL with WHERE and LIKE clauses
+(SELECT ID FROM employee) 
+INTERSECT ALL 
+(SELECT ID FROM works 
+WHERE company_name LIKE 'f%');
+
+-- 4. Use of EXCEPT ALL to find differences between sets
+(SELECT ID, emp_name FROM employee) 
+EXCEPT ALL 
+(SELECT ID, emp_name FROM employee 
+WHERE age < 30);
+
+-- 5. Use of IS NOT NULL to filter non-null values
+SELECT emp_name FROM employee 
+WHERE emp_name IS NOT NULL;
+
+-- 6. Use of IS NULL to find missing values
+SELECT emp_name FROM employee 
+WHERE emp_name IS NULL;
+
+-- 7. Use of AND operator with multiple conditions
+SELECT e.emp_name, w.salary 
+FROM employee e, works w 
+WHERE e.ID = w.ID 
+AND e.emp_name LIKE 'A%' 
+AND w.salary > 250000;
+
+-- 8. Use of OR operator in WHERE clause
+SELECT e.emp_name, w.salary 
+FROM employee e, works w 
+WHERE e.ID = w.ID 
+AND e.emp_name LIKE 'A%' 
+OR w.salary > 250000;
+
+-- 9. Use of NOT operator with IS NULL
+SELECT emp_name, age, city 
+FROM employee 
+WHERE NOT (age > 30) 
+OR age IS NULL;
+
+-- 10. Use of NOT operator with comparison
+SELECT emp_name, age, city 
+FROM employee 
+WHERE NOT (age > 30);
+
+-- 11. Use of AVG aggregate function with AS alias
+SELECT AVG(salary) AS avg_salary 
+FROM works;
+
+-- 12. Use of MIN aggregate function with AS alias
+SELECT MIN(salary) AS min_salary 
+FROM works;
+
+-- 13. Use of MAX aggregate function with AS alias
+SELECT MAX(salary) AS max_salary 
+FROM works;
+
+-- 14. Use of SUM aggregate function with AS alias
+SELECT SUM(salary) AS total_salary 
+FROM works;
+
+-- 15. Use of COUNT(*) with AS alias
+SELECT COUNT(*) AS total_employees 
+FROM employee;
+
+-- 16. Use of COUNT with column name and AS alias
+SELECT COUNT(emp_name) AS named_employees 
+FROM employee;
+
+-- 17. Use of WHERE clause with AVG aggregate function
+SELECT AVG(salary) AS avg_salary 
+FROM works 
+WHERE company_name = 'flask';
+
+-- 18. Use of COUNT(DISTINCT) with WHERE clause
+SELECT COUNT(DISTINCT city) 
+FROM employee 
+WHERE age > 25;
+
+-- 19. Use of COUNT with column and WHERE clause
+SELECT COUNT(emp_name) 
+FROM employee 
+WHERE age > 25;
+
+-- 20. Use of COUNT(*) without alias
+SELECT COUNT(*) 
+FROM employee;
+
+-- 21. Use of GROUP BY with AVG and AS alias
+SELECT company_name, AVG(salary) AS avg_salary 
+FROM works 
+GROUP BY company_name;
+
+-- 22. Use of HAVING clause with aggregate function
+SELECT company_name, AVG(salary) AS avg_salary 
+FROM works 
+GROUP BY company_name 
+HAVING AVG(salary) > 300000;
+
+-- 23. Use of SUM function without alias
+SELECT SUM(salary) 
+FROM works;
+
+-- 24. Use of COUNT(*) in different context
+SELECT COUNT(*) 
+FROM works;
+
+-- 25. Use of COUNT with specific column
+SELECT COUNT(emp_name) 
+FROM employee;
+
+-- 26. Use of subquery in FROM clause with AS alias
+SELECT emp_name, age 
+FROM (SELECT emp_name, age 
+      FROM employee 
+      WHERE age IS NOT NULL) AS emp_details;
+
+-- 27. Use of subquery with MIN in WHERE clause
+SELECT emp_name 
+FROM employee 
+WHERE age > (SELECT MIN(age) 
+             FROM employee 
+             WHERE age IS NOT NULL);
+
+-- 28. Use of subquery with AVG in WHERE clause
+SELECT emp_name 
+FROM employee 
+WHERE age > (SELECT AVG(age) 
+             FROM employee 
+             WHERE age IS NOT NULL);
+
+-- 29. Use of scalar subquery in SELECT clause
+SELECT (SELECT COUNT(*) 
+        FROM employee 
+        WHERE city = 'ranchi');
+
+-- 30. Use of nested IN subqueries with OR
+SELECT DISTINCT emp_name 
+FROM employee 
+WHERE city IN (SELECT city 
+               FROM company 
+               WHERE company_name IN (SELECT company_name 
+                                      FROM works 
+                                      WHERE salary > 250000)) 
+OR city IN (SELECT city 
+            FROM employee 
+            WHERE age > 30);
+
+-- 31. Use of NOT IN with nested subqueries
+SELECT DISTINCT emp_name 
+FROM employee 
+WHERE city NOT IN (SELECT city 
+                   FROM company 
+                   WHERE company_name IN (SELECT company_name 
+                                          FROM works 
+                                          WHERE salary < 200000));
+
+-- 32. Use of NOT IN with literal values
+SELECT emp_name 
+FROM employee 
+WHERE city NOT IN ('delhi','mumbai');
+
+-- 33. Use of row constructor with IN subquery
+SELECT emp_name, age, city 
+FROM employee 
+WHERE (emp_name, age, city) IN (SELECT emp_name, age, city 
+                                FROM employee 
+                                WHERE age > 30);
+
+-- 34. Use of self-join with table aliases
+SELECT DISTINCT A.emp_name, B.emp_name 
+FROM employee AS A, employee AS B 
+WHERE A.age > B.age 
+AND A.emp_name LIKE 'A%';
+
+-- 35. Use of self-join returning single column
+SELECT DISTINCT A.emp_name 
+FROM employee AS A, employee AS B 
+WHERE A.age > B.age 
+AND A.emp_name LIKE 'A%';
+
+-- 36. Use of SOME comparison operator
+SELECT emp_name 
+FROM employee 
+WHERE age > SOME (SELECT age 
+                  FROM employee 
+                  WHERE city = 'ranchi');
+
+-- 37. Use of self-join with specific condition
+SELECT DISTINCT A.emp_name 
+FROM employee AS A, employee AS B 
+WHERE A.age > B.age 
+AND B.city = 'ranchi';
+
+-- 38. Use of ALL comparison operator
+SELECT emp_name 
+FROM employee 
+WHERE age > ALL (SELECT age 
+                 FROM employee 
+                 WHERE city = 'delhi');
+
+-- 39. Use of ALL with subquery (repeated)
+SELECT emp_name 
+FROM employee 
+WHERE age > ALL (SELECT age 
+                 FROM employee 
+                 WHERE city = 'delhi');
+
+-- 40. Use of ALL with subquery in parentheses
+SELECT emp_name 
+FROM employee 
+WHERE age > ALL (SELECT age 
+                 FROM employee 
+                 WHERE city = 'delhi');
+
+-- 41. Use of ALL with complete subquery
+SELECT emp_name 
+FROM employee 
+WHERE age > ALL (SELECT age 
+                 FROM employee 
+                 WHERE city = 'delhi');
+
+-- 42. Use of EXISTS with correlated subquery
+SELECT emp_name 
+FROM employee 
+WHERE EXISTS (SELECT 1 
+              FROM works 
+              WHERE employee.ID = works.ID 
+              AND salary > 300000);
+
+-- 43. Use of EXISTS with table aliases
+SELECT DISTINCT emp_name 
+FROM employee e 
+WHERE EXISTS (SELECT 1 
+              FROM works w 
+              WHERE e.ID = w.ID 
+              AND w.salary > 300000);
+
+-- 44. Use of NOT EXISTS with condition
+SELECT emp_name 
+FROM employee e 
+WHERE NOT EXISTS (SELECT 1 
+                  FROM works w 
+                  WHERE e.ID = w.ID 
+                  AND w.company_name = 'flask');
+
+-- 45. Use of NOT EXISTS with comparison
+SELECT DISTINCT emp_name 
+FROM employee e 
+WHERE NOT EXISTS (SELECT 1 
+                  FROM works w 
+                  WHERE e.ID = w.ID 
+                  AND w.salary > 400000);
+
+-- 46. Use of subquery with COUNT(*) in WHERE
+SELECT DISTINCT emp_name 
+FROM employee e 
+WHERE (SELECT COUNT(*) 
+       FROM works w 
+       WHERE e.ID = w.ID 
+       AND w.salary > 250000) >= 1;
+
+-- 47. Use of subquery with COUNT(column) in WHERE
+SELECT DISTINCT emp_name 
+FROM employee e 
+WHERE (SELECT COUNT(company_name) 
+       FROM works w 
+       WHERE e.ID = w.ID 
+       AND w.salary > 250000) >= 1;
+
+-- 48. Use of derived table with aggregate in FROM
+SELECT company_name, avg_sal 
+FROM (SELECT company_name, AVG(salary) AS avg_sal 
+      FROM works 
+      GROUP BY company_name) AS company_stats 
+WHERE avg_sal > 300000;
+
+-- 49. Use of CTE (WITH clause) with JOIN
+WITH max_sal AS (SELECT MAX(salary) AS highest 
+                 FROM works) 
+SELECT e.emp_name, w.salary, w.company_name 
+FROM employee e 
+JOIN works w ON e.ID = w.ID;
+
+-- 50. Use of CTE with multiple JOINs
+WITH max_sal AS (SELECT MAX(salary) AS highest 
+                 FROM works) 
+SELECT e.emp_name, w.salary, c.city 
+FROM employee e 
+JOIN works w ON e.ID = w.ID 
+JOIN company c ON w.company_name = c.company_name;
+
+-- 51. Use of multiple CTEs with join condition
+WITH company_stats (company_name, total_salary) AS 
+     (SELECT company_name, SUM(salary) 
+      FROM works 
+      GROUP BY company_name), 
+     avg_stats (avg_salary) AS 
+     (SELECT AVG(total_salary) 
+      FROM company_stats) 
+SELECT company_name 
+FROM company_stats, avg_stats 
+WHERE company_stats.total_salary > avg_stats.avg_salary;
+
+-- 52. Use of correlated subquery in SELECT
+SELECT e.emp_name, 
+       (SELECT COUNT(*) 
+        FROM works w 
+        WHERE w.ID = e.ID) AS work_count 
+FROM employee e;
+
+-- 53. Use of multiple scalar subqueries in expression
+SELECT (SELECT COUNT(*) 
+        FROM works) / 
+       (SELECT COUNT(*) 
+        FROM employee) AS ratio;
+
+-- 54. Use of scalar subqueries in arithmetic operation
+SELECT (SELECT COUNT(*) 
+        FROM employee) - 
+       (SELECT COUNT(*) 
+        FROM works) AS difference;
+
+-- 55. Use of DELETE without WHERE clause
+DELETE FROM works;
+
+-- 56. Use of DELETE with WHERE and string comparison
+DELETE FROM employee 
+WHERE emp_name = 'zaza';
+
+-- 57. Use of DELETE with IN subquery
+DELETE FROM works 
+WHERE ID IN (SELECT ID 
+             FROM employee 
+             WHERE city = 'chapra');
+
+-- 58. Use of DELETE with aggregate subquery
+DELETE FROM works 
+WHERE salary < (SELECT avg_sal 
+                FROM (SELECT AVG(salary) AS avg_sal 
+                      FROM works) AS temp);
+
+-- 59. Use of INSERT with VALUES clause
+INSERT INTO employee 
+VALUES ('25soe30', 'John Doe', 'Main Street', 28, 'Mumbai');
+
+-- 60. Use of INSERT with column list
+INSERT INTO employee (ID, emp_name, age) 
+VALUES ('25soe31', 'Jane Smith', 32);
+
+-- 61. Use of INSERT with NULL values
+INSERT INTO employee 
+VALUES ('25soe32', NULL, 'Park Road', NULL, NULL);
+
+-- 62. Use of INSERT with SELECT subquery
+INSERT INTO works 
+SELECT ID, 'tech corp', 350000 
+FROM employee 
+WHERE city = 'ranchi';
+
+-- 63. Use of UPDATE without WHERE clause
+UPDATE works 
+SET salary = salary * 1.1;
+
+-- 64. Use of UPDATE with WHERE condition
+UPDATE works 
+SET salary = salary * 1.1 
+WHERE salary < 300000;
+
+-- 65. Use of UPDATE with aggregate subquery
+UPDATE works 
+SET salary = salary * 1.1 
+WHERE salary < (SELECT AVG(salary) 
+                FROM (SELECT salary 
+                      FROM works) AS temp);
+
+-- 66. Use of UPDATE with comparison operator
+UPDATE works 
+SET salary = salary * 1.05 
+WHERE salary > 400000;
+
+-- 67. Use of UPDATE with different condition
+UPDATE works 
+SET salary = salary * 1.15 
+WHERE salary < 250000;
+
+-- 68. Use of UPDATE with CASE statement
+UPDATE works 
+SET salary = CASE 
+             WHEN salary <= 300000 THEN salary * 1.2 
+             ELSE salary * 1.1 
+             END;
+
+-- 69. Use of UPDATE with correlated subquery
+UPDATE works w 
+SET salary = (SELECT salary * 1.1 
+              FROM works 
+              WHERE works.ID = w.ID);
+
+-- 70. Use of UPDATE with correlated subquery and CASE
+UPDATE works w 
+SET salary = (SELECT CASE 
+                     WHEN salary > 400000 THEN salary * 1.05 
+                     ELSE salary * 1.1 
+                     END 
+              FROM works 
+              WHERE works.ID = w.ID);
