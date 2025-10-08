@@ -415,3 +415,7 @@ SET salary = (SELECT CASE
                      END 
               FROM works 
               WHERE works.ID = w.ID);
+
+
+
+              https://chat.deepseek.com/share/huvf8eag97qsebralp

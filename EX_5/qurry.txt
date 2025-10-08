@@ -31,3 +31,31 @@ q28 - Use of subquery with AVG in WHERE clause
 q29 - Use of scalar subquery in SELECT clause
 ## set membership 
 q30 - Use of nested IN subqueries with OR
+q31 - use of not in  with nested subqueries 
+q32 - use of not in with literal values
+q33 - Use of row constructor with IN subquery
+q34 - Use of self-join with table aliases
+q35 - Use of self-join returning single column
+q36 - Use of SOME comparison operator
+q37 - Use of self-join with specific condition
+q38 - Use of ALL comparison operator
+q39 - Use of ALL with subquery 
+q40 - Use of ALL with subquery  with where clause 
+q41 - 
+q42 - Use of EXISTS with correlated subquery 
+q43 - Use of EXISTS with temp table 
+q44 - Use of NOT EXISTS with condition
+q45 - Use of NOT EXISTS with comparison
+q46 - Use of subquery with COUNT(*) in WHERE
+q47 - Use of subquery with COUNT(company name ) in WHERE
+q48 - Use of temp  table in from  with aggregate function 
+q49 - 
+q51 - use of with to get who pay above average total salary 
+q52 - Use of correlated subquery in SELECT
+q53 - Use of multiple scalar subqueries in expression
+q54 - Use of scalar subqueries in arithmetic operation
+q55 -
+q56 - 
+
+q59 - Use of INSERT with VALUES clause
+q60 - Use of INSERT with column list

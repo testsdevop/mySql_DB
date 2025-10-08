@@ -1,0 +1,213 @@
+-- 26. List names and ages of employees with known ages?
+SELECT emp_name, age FROM (SELECT emp_name, age FROM employee 
+WHERE age IS NOT NULL) AS emp_details;
+
+-- 27. Find employees older than the youngest employee?
+SELECT emp_name FROM employee 
+WHERE age > (SELECT MIN(age) FROM employee 
+WHERE age IS NOT NULL);
+
+-- 28. Find employees older than average age?
+SELECT emp_name FROM employee 
+WHERE age > (SELECT AVG(age) FROM employee 
+WHERE age IS NOT NULL);
+
+-- 29. How many employees live in Ranchi?
+SELECT (SELECT COUNT(*) FROM employee 
+WHERE city = 'ranchi');
+
+-- 30. Find employees in cities with high-paying companies or older employees?
+SELECT DISTINCT emp_name FROM employee 
+WHERE city IN (SELECT city FROM company 
+WHERE company_name IN (SELECT company_name FROM works 
+WHERE salary > 250000)) 
+OR city IN (SELECT city FROM employee 
+WHERE age > 30);
+
+-- 31. Find employees not in cities with low-paying companies?
+SELECT DISTINCT emp_name FROM employee 
+WHERE city NOT IN (SELECT city FROM company 
+WHERE company_name IN (SELECT company_name FROM works 
+WHERE salary < 200000));
+
+-- 32. Find employees not in Delhi or Mumbai?
+SELECT emp_name FROM employee 
+WHERE city NOT IN ('delhi','mumbai');
+
+-- 33. Find employees matching specific profile criteria?
+SELECT emp_name, age, city FROM employee 
+WHERE (emp_name, age, city) IN (SELECT emp_name, age, city FROM employee 
+WHERE age > 30);
+
+-- 34. Find pairs where A is older than B and A's name starts with 'A'?
+SELECT DISTINCT A.emp_name, B.emp_name FROM employee AS A, employee AS B 
+WHERE A.age > B.age AND A.emp_name LIKE 'A%';
+
+-- 35. Find employees named starting with 'A' who are older than someone?
+SELECT DISTINCT A.emp_name FROM employee AS A, employee AS B 
+WHERE A.age > B.age AND A.emp_name LIKE 'A%';
+
+-- 36. Find employees older than some employee from Ranchi?
+SELECT emp_name FROM employee 
+WHERE age > SOME (SELECT age FROM employee 
+WHERE city = 'ranchi');
+
+-- 37. Find employees older than someone from Ranchi?
+SELECT DISTINCT A.emp_name FROM employee AS A, employee AS B 
+WHERE A.age > B.age AND B.city = 'ranchi';
+
+-- 38. Find employees older than all from Delhi?
+SELECT emp_name FROM employee 
+WHERE age > ALL (SELECT age FROM employee 
+WHERE city = 'delhi');
+
+-- 39. Find employees older than all Delhi employees?
+SELECT emp_name FROM employee 
+WHERE age > ALL (SELECT age FROM employee 
+WHERE city = 'delhi');
+
+-- 40. Find employees older than every Delhi employee?
+SELECT emp_name FROM employee 
+WHERE age > ALL (SELECT age FROM employee 
+WHERE city = 'delhi');
+
+-- 41. Find employees older than all in Delhi?
+SELECT emp_name FROM employee 
+WHERE age > ALL (SELECT age FROM employee 
+WHERE city = 'delhi');
+
+-- 42. Find employees earning more than 300,000?
+SELECT emp_name FROM employee 
+WHERE EXISTS (SELECT 1 FROM works 
+WHERE employee.ID = works.ID AND salary > 300000);
+
+-- 43. Find distinct employees earning over 300,000?
+SELECT DISTINCT emp_name FROM employee e 
+WHERE EXISTS (SELECT 1 FROM works w 
+WHERE e.ID = w.ID AND w.salary > 300000);
+
+-- 44. Find employees not working for Flask?
+SELECT emp_name FROM employee e 
+WHERE NOT EXISTS (SELECT 1 FROM works w 
+WHERE e.ID = w.ID AND w.company_name = 'flask');
+
+-- 45. Find employees not earning over 400,000?
+SELECT DISTINCT emp_name FROM employee e 
+WHERE NOT EXISTS (SELECT 1 FROM works w 
+WHERE e.ID = w.ID AND w.salary > 400000);
+
+-- 46. Find employees with at least one high-paying job?
+SELECT DISTINCT emp_name FROM employee e 
+WHERE (SELECT COUNT(*) FROM works w 
+WHERE e.ID = w.ID AND w.salary > 250000) >= 1;
+
+-- 47. Find employees with high-paying company jobs?
+SELECT DISTINCT emp_name FROM employee e 
+WHERE (SELECT COUNT(company_name) FROM works w 
+WHERE e.ID = w.ID AND w.salary > 250000) >= 1;
+
+-- 48. Which companies pay average salary above 300,000?
+SELECT company_name, avg_sal FROM (SELECT company_name, AVG(salary) AS avg_sal FROM works 
+GROUP BY company_name) AS company_stats 
+WHERE avg_sal > 300000;
+
+-- 49. List all working employees with their details?
+WITH max_sal AS (SELECT MAX(salary) AS highest FROM works) 
+SELECT e.emp_name, w.salary, w.company_name FROM employee e 
+JOIN works w ON e.ID = w.ID;
+
+-- 50. List employees with their company cities?
+WITH max_sal AS (SELECT MAX(salary) AS highest FROM works) 
+SELECT e.emp_name, w.salary, c.city FROM employee e 
+JOIN works w ON e.ID = w.ID 
+JOIN company c ON w.company_name = c.company_name;
+
+-- 51. Which companies pay above average total salary?
+WITH company_stats (company_name, total_salary) AS (SELECT company_name, SUM(salary) 
+FROM works GROUP BY company_name), 
+avg_stats (avg_salary) AS (SELECT AVG(total_salary) FROM company_stats) 
+SELECT company_name FROM company_stats, avg_stats 
+WHERE company_stats.total_salary > avg_stats.avg_salary;
+
+-- 52. How many jobs does each employee have?
+SELECT e.emp_name, (SELECT COUNT(*) FROM works w 
+WHERE w.ID = e.ID) AS work_count FROM employee e;
+
+-- 53. What is the employment ratio?
+SELECT (SELECT COUNT(*) FROM works) / (SELECT COUNT(*) FROM employee) AS ratio;
+
+-- 54. How many employees don't have jobs?
+SELECT (SELECT COUNT(*) FROM employee) - (SELECT COUNT(*) FROM works) AS difference;
+
+-- 55. Remove all employment records?
+-- DELETE FROM works;
+
+-- 56. Remove employee named 'zaza'?
+-- DELETE FROM employee 
+-- WHERE emp_name = 'zaza';
+
+-- 57. Remove employees from Chapra?
+-- DELETE FROM works 
+-- WHERE ID IN (SELECT ID FROM employee 
+-- WHERE city = 'chapra');
+
+-- 58. Remove below-average salary records?
+-- DELETE FROM works 
+-- WHERE salary < (SELECT avg_sal FROM (SELECT AVG(salary) AS avg_sal FROM works) AS temp);
+
+-- 59. Add new employee John Doe?
+INSERT INTO employee 
+VALUES ('25soe30', 'John Doe', 'Main Street', 28, 'Mumbai');
+
+-- 60. Add employee with partial information?
+INSERT INTO employee (ID, emp_name, age) 
+VALUES ('25soe31', 'Jane Smith', 32);
+
+-- 61. Add employee with unknown details?
+INSERT INTO employee 
+VALUES ('25soe32', NULL, 'Park Road', NULL, NULL);
+
+-- 62. Give Ranchi employees jobs at Tech Corp?
+INSERT INTO works 
+SELECT ID, 'tech corp', 350000 FROM employee 
+WHERE city = 'ranchi';
+
+-- 63. Give 10% raise to all employees?
+UPDATE works 
+SET salary = salary * 1.1;
+
+-- 64. Give 10% raise to low earners?
+UPDATE works 
+SET salary = salary * 1.1 
+WHERE salary < 300000;
+
+-- 65. Give 10% raise to below-average earners?
+UPDATE works 
+SET salary = salary * 1.1 
+WHERE salary < (SELECT AVG(salary) FROM (SELECT salary FROM works) AS temp);
+
+-- 66. Give 5% raise to high earners?
+UPDATE works 
+SET salary = salary * 1.05 
+WHERE salary > 400000;
+
+-- 67. Give 15% raise to lowest earners?
+UPDATE works 
+SET salary = salary * 1.15 
+WHERE salary < 250000;
+
+-- 68. Give different raises based on salary brackets?
+UPDATE works 
+SET salary = CASE WHEN salary <= 300000 THEN salary * 1.2 
+ELSE salary * 1.1 END;
+
+-- 69. Give 10% raise using subquery?
+UPDATE works w 
+SET salary = (SELECT salary * 1.1 FROM works 
+WHERE works.ID = w.ID);
+
+-- 70. Give different raises using conditional subquery?
+UPDATE works w 
+SET salary = (SELECT CASE WHEN salary > 400000 THEN salary * 1.05 
+ELSE salary * 1.1 END FROM works 
+WHERE works.ID = w.ID);
