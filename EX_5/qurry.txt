@@ -59,3 +59,9 @@ q56 -
 
 q59 - Use of INSERT with VALUES clause
 q60 - Use of INSERT with column list
+q61 - Use of INSERT with SELECT subquery
+
+q63 - Use of UPDATE without WHERE clause
+q64 - Use of UPDATE with WHERE condition
+q65 - Use of UPDATE with aggregate subquery
+q68 - Use of UPDATE with CASE statement
