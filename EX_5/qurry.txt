@@ -56,6 +56,7 @@ q53 - Use of multiple scalar subqueries in expression
 q54 - Use of scalar subqueries in arithmetic operation
 q55 -
 q56 - 
+q58 - Use of DELETE with aggregate subquery
 
 q59 - Use of INSERT with VALUES clause
 q60 - Use of INSERT with column list
